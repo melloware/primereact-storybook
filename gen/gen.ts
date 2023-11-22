@@ -18,8 +18,26 @@ console.log(components);
 
 // Add file
 
-// groups.forEach((componentName) => {
-//   fs.writeFileSync(`./stories/${componentName}.stories.js`, "Hello");
-// });
+const file = `
+  import { Button } from 'primereact/button';
+
+  export default {
+    title: 'Example/Button',
+    component: Button,
+    parameters: {
+      layout: 'centered',
+    },
+    tags: ['autodocs'],
+    argTypes: {
+      backgroundColor: { control: 'color' },
+    },
+  };
+
+
+`;
+
+groups.forEach((componentName) => {
+  fs.writeFileSync(`./stories/${componentName}.stories.js`, file);
+});
 
 setTimeout(() => {}, 100000000);
