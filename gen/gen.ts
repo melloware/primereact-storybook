@@ -99,13 +99,59 @@ console.log(components);
 // Add file
 
 components.forEach((component) => {
-  const argTypes = component.props.values.reduce(
+  const argTypes: { [key: string]: any } = component.props.values.reduce(
     (obj, prop) => ({
       ...obj,
       [prop.name]: translateProp(prop),
     }),
     {}
   );
+
+  console.log("types", argTypes);
+
+  const argInit = {
+    ...(argTypes.label ? { label: component.name } : {}),
+    ...(argTypes.placeholder ? { placeholder: component.name } : {}),
+    ...(!argTypes.placeholder && !argTypes.options && argTypes.value
+      ? { value: 0 }
+      : {}),
+    ...(argTypes.onLabel ? { onLabel: "Yes" } : {}),
+    ...(argTypes.offLabel ? { offLabel: "No" } : {}),
+    ...(argTypes.unstyled ? { unstyled: false } : {}),
+    ...(argTypes.activeIndex ? { activeIndex: 0 } : {}),
+    ...(argTypes.options
+      ? {
+          options: [
+            { label: "PrimeReact Rocks!", value: "1" },
+            { label: "StoryBook Rocks!", value: "2" },
+          ],
+          optionLabel: "label",
+          optionValue: "value",
+        }
+      : {}),
+    ...(argTypes.model
+      ? {
+          model: [
+            {
+              label: "Update",
+              icon: "pi pi-refresh",
+            },
+            {
+              label: "Delete",
+              icon: "pi pi-times",
+            },
+            {
+              label: "React Website",
+              icon: "pi pi-external-link",
+            },
+            {
+              label: "Upload",
+              icon: "pi pi-upload",
+            },
+          ],
+        }
+      : {}),
+  };
 
   const file = `
     import { ${
@@ -122,14 +168,11 @@ components.forEach((component) => {
     };
 
     export const Default = {
-      args: {
-        primary: true,
-        label: 'Button',
-      },
+      args: ${JSON.stringify(argInit)},
     };
     
   `;
   fs.writeFileSync(`./stories/${component.name}.stories.jsx`, file);
 });
 
-setTimeout(() => {}, 100000000);
+// setTimeout(() => {}, 100000000);
