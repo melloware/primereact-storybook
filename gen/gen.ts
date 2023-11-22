@@ -56,6 +56,8 @@ const components: Component[] = importPaths
 
 console.log(components);
 
+const args = { backgroundColor: { control: 'color' } }
+
 // Add file
 
 components.forEach((component) => {
@@ -68,9 +70,7 @@ components.forEach((component) => {
       parameters: {
         layout: 'centered',
       },
-      argTypes: {
-        backgroundColor: { control: 'color' },
-      },
+      argTypes: ${JSON.stringify(args)},
     };
 
     export const Default = {
@@ -79,6 +79,7 @@ components.forEach((component) => {
         label: 'Button',
       },
     };
+    
   `;
   fs.writeFileSync(`./stories/${component.name}.stories.js`, file);
 });
