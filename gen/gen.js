@@ -1,6 +1,7 @@
 "use strict";
 const fs = require("fs");
-const apidoc = require("./apidoc.json");
+const apidocJSON = require("./apidoc.json");
+const menuJSON = require("./menu.json");
 const BLACKLIST = [
     'AccordionTab',
     'CSSTransition'
@@ -8,14 +9,20 @@ const BLACKLIST = [
 // Create directory
 fs.rmSync("./stories", { recursive: true, force: true });
 fs.mkdirSync("./stories");
+const menu = menuJSON.data.find((i) => i.name === 'Components').children;
+console.log('menu', menu);
 // console.log(apidoc);
-const importPaths = Object.keys(apidoc).filter((componentName) => componentName.indexOf("/") === -1 && componentName.indexOf("-") === -1);
+const importPaths = Object.keys(apidocJSON).filter((componentName) => componentName.indexOf("/") === -1 && componentName.indexOf("-") === -1);
 const components = importPaths
-    .flatMap((group) => apidoc[group].components)
+    .flatMap((group) => apidocJSON[group].components)
     .filter((component) => !!component)
     .flatMap(components => {
-    return Object.keys(components).map(name => (Object.assign(Object.assign({}, components[name]), { name })));
+    return Object.keys(components).map(name => {
+        var _a;
+        return (Object.assign(Object.assign({}, components[name]), { category: (_a = menu.find((category) => category.children.find((comp) => comp.name === name))) === null || _a === void 0 ? void 0 : _a.name, name }));
+    });
 })
+    .filter(component => !!component.category)
     .filter(component => BLACKLIST.indexOf(component.name) === -1);
 console.log(components);
 // Add file
@@ -24,7 +31,7 @@ components.forEach((component) => {
     import { ${component.name} } from 'primereact/${component.name.toLowerCase()}';
 
     export default {
-      title: '${component.name}',
+      title: '${component.category}/${component.name}',
       component: ${component.name},
       parameters: {
         layout: 'centered',
@@ -34,7 +41,7 @@ components.forEach((component) => {
       },
     };
 
-    export const Primary = {
+    export const Default = {
       args: {
         primary: true,
         label: 'Button',

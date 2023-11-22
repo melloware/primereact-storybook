@@ -1,5 +1,6 @@
 const fs = require("fs");
-const apidoc = require("./apidoc.json");
+const apidocJSON = require("./apidoc.json");
+const menuJSON = require("./menu.json");
 
 const BLACKLIST: string[] = [
   'AccordionTab',
@@ -9,6 +10,7 @@ const BLACKLIST: string[] = [
 interface Component {
   name: string,
   description: string,
+  category: string,
   methods: {
     description: string,
     values: any[]
@@ -27,20 +29,28 @@ interface Component {
 fs.rmSync("./stories", { recursive: true, force: true });
 fs.mkdirSync("./stories");
 
+const menu = menuJSON.data.find((i: any) => i.name === 'Components').children;
+
+console.log('menu', menu);
+
 // console.log(apidoc);
-const importPaths = Object.keys(apidoc).filter(
+const importPaths = Object.keys(apidocJSON).filter(
   (componentName) => componentName.indexOf("/") === -1 && componentName.indexOf("-") === -1
 );
 
 const components: Component[] = importPaths
-  .flatMap((group) => apidoc[group].components)
+  .flatMap((group) => apidocJSON[group].components)
   .filter((component) => !!component)
   .flatMap(components => {
     return Object.keys(components).map(name => ({
       ...components[name],
+      category: menu.find((category: any) => 
+        category.children.find((comp: any) => comp.name === name)
+      )?.name, 
       name
     }))
   })
+  .filter(component => !!component.category)
   .filter(component => BLACKLIST.indexOf(component.name) === -1);
 
 
@@ -53,7 +63,7 @@ components.forEach((component) => {
     import { ${component.name} } from 'primereact/${component.name.toLowerCase()}';
 
     export default {
-      title: '${component.name}',
+      title: '${component.category}/${component.name}',
       component: ${component.name},
       parameters: {
         layout: 'centered',
@@ -63,7 +73,7 @@ components.forEach((component) => {
       },
     };
 
-    export const Primary = {
+    export const Default = {
       args: {
         primary: true,
         label: 'Button',
