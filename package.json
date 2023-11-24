@@ -1,16 +1,21 @@
 {
-  "name": "primereact-theme-designer",
+  "name": "primereact-storybook",
   "version": "1.0.0",
-  "description": "",
+  "description": "Storybook for PrimeReact",
   "main": "index.js",
   "scripts": {
-    "gen": "tsc; node --inspect gen/gen.js",
+    "gen": "tsc && node --inspect gen/gen.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "primeicons": "^6.0.1",
+    "primereact": "^10.1.1",
+    "quill": "^1.3.7"
+  },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.5.3",
     "@storybook/addon-interactions": "^7.5.3",
@@ -27,10 +32,5 @@
     "react-dom": "^18.2.0",
     "storybook": "^7.5.3",
     "tailwindcss": "^3.3.5"
-  },
-  "dependencies": {
-    "primeicons": "^6.0.1",
-    "primereact": "^10.1.1",
-    "quill": "^1.3.7"
   }
 }
