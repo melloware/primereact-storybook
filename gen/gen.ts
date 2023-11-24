@@ -2,6 +2,7 @@ const fs = require("fs");
 const apidocJSON = require("./apidoc.json");
 const menuJSON = require("./menu.json");
 
+// Components we don't want to generate
 const BLACKLIST: string[] = ["AccordionTab", "CSSTransition"];
 
 interface Prop {
@@ -31,26 +32,25 @@ interface Component {
   };
 }
 
-// Create directory
+// Create directory of stories
 fs.rmSync("./stories", { recursive: true, force: true });
 fs.mkdirSync("./stories");
 
+// Load in PrimeReact menu JSON
 const menu = menuJSON.data.find((i: any) => i.name === "Components").children;
 
-console.log("menu", menu);
-
-// console.log(apidoc);
+// Do our best to only catch actual components
 const importPaths = Object.keys(apidocJSON).filter(
   (componentName) =>
     componentName.indexOf("/") === -1 && componentName.indexOf("-") === -1
 );
 
+// Icons for generating relevant dropdowns in stories
 const icons = Object.keys(apidocJSON)
   .filter((componentName) => componentName.indexOf("icons/") !== -1)
   .map((icon) => `pi pi-${icon.replace("icons/", "")}`);
 
-console.log(icons);
-
+// Given an apidoc prop, generate the associated storybook prop
 const translateProp = (
   prop: Prop
 ): { control: string; description: string; options: string[] | null } => {
@@ -79,26 +79,28 @@ const translateProp = (
   return { control: type, description, options };
 };
 
+// Get all components in the api doc
 const components: Component[] = importPaths
   .flatMap((group) => apidocJSON[group].components)
   .filter((component) => !!component)
   .flatMap((components) => {
     return Object.keys(components).map((name) => ({
       ...components[name],
+      // Add in the category
       category: menu.find((category: any) =>
         category.children.find((comp: any) => comp.name === name)
       )?.name,
+      // Add in the name
       name,
     }));
   })
+  // Filter out components that don't have a menu category
   .filter((component) => !!component.category)
+  // Filter out components that are in the blacklist
   .filter((component) => BLACKLIST.indexOf(component.name) === -1);
 
-console.log(components);
-
-// Add file
-
 components.forEach((component) => {
+  // Generate the configurable storybook props
   const argTypes: { [key: string]: any } = component.props.values.reduce(
     (obj, prop) => ({
       ...obj,
@@ -107,8 +109,7 @@ components.forEach((component) => {
     {}
   );
 
-  console.log("types", argTypes);
-
+  // Generate some defaults
   const argInit = {
     ...(argTypes.label ? { label: component.name } : {}),
     ...(argTypes.placeholder ? { placeholder: component.name } : {}),
@@ -153,6 +154,7 @@ components.forEach((component) => {
       : {}),
   };
 
+  // Generate the storybook file
   const file = `
     import { ${
       component.name
@@ -172,7 +174,10 @@ components.forEach((component) => {
     };
     
   `;
+
+  // Write into the storybook folder
   fs.writeFileSync(`./stories/${component.name}.stories.jsx`, file);
 });
 
+// Enable this to keep Node alive for --inspect
 // setTimeout(() => {}, 100000000);

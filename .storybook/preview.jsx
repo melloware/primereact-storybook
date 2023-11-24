@@ -1,16 +1,16 @@
 import { PrimeReactProvider } from 'primereact/api';
 import 'primeicons/primeicons.css';
-// import "primereact/resources/themes/lara-light-cyan/theme.css";
-import "./style.css";
-import shadcn from './shadcn';
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+// import "./style.css";
+// import shadcn from './shadcn';
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
   decorators: [
     (Story) => (
       <PrimeReactProvider value={{
-          // unstyled: false,
-          pt: shadcn
+          // unstyled: true,
+          // pt: shadcn
         }}>
         {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
         <Story />
