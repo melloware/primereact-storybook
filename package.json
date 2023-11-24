@@ -2,6 +2,7 @@
   "name": "primereact-storybook",
   "version": "1.0.0",
   "description": "Storybook for PrimeReact",
+  "homepage": "https://melloware.github.io/primereact-storybook/",
   "main": "index.js",
   "scripts": {
     "gen": "tsc && node --inspect gen/gen.js",
