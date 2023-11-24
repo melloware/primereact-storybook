@@ -1,4 +1,4 @@
-# primereact-theme-designer
+# primereact-storybook
 
 ## Starting the project
 
