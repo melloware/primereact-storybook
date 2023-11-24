@@ -6,7 +6,7 @@
   "scripts": {
     "gen": "tsc && node --inspect gen/gen.js",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build -o docs/"
   },
   "keywords": [],
   "author": "",
