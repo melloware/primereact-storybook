@@ -13,3 +13,13 @@ npm run storybook
 `./gen/gen.ts` <= Generator
 
 `./.storybook/preview.jsx` <= enable/disable unstyled mode
+
+## Publish Site
+
+```bash
+npm run storybook-build
+
+git commit
+```
+
+The new files in `/docs` will be published automatically to GitHub Pages at https://melloware.github.io/primereact-storybook
