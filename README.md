@@ -1,4 +1,8 @@
-# primereact-storybook
+<div align="center">
+<img src="https://raw.githubusercontent.com/melloware/primereact-storybook/main/images/primereact.svg" height="70" ><img src="https://raw.githubusercontent.com/melloware/primereact-storybook/main/images/plus-sign.svg" height="70" ><img src="https://raw.githubusercontent.com/melloware/primereact-storybook/main/images/storybook.svg" height="70">
+
+# PrimeReact Storybook
+</div>
 
 ## Starting the project
 
