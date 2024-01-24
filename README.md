@@ -4,6 +4,11 @@
 # PrimeReact Storybook
 </div>
 
+**If you like this project, please consider supporting me ❤️**
+
+[![GitHub Sponsor](https://img.shields.io/badge/GitHub-FFDD00?style=for-the-badge&logo=github&logoColor=black)](https://github.com/sponsors/melloware)
+[![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/mellowareinc)
+
 ## Starting the project
 
 ```bash
